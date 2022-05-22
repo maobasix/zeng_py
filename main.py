@@ -1,24 +1,19 @@
-import openpyxl
-import datetime
+import requests
 
 
-class py_excel:
-    def __init__(self, path):
-        self.path = path
-
-    def add_excel(self):
-        cel = openpyxl.Workbook()
-        cel.save(self.path)
-
-    def del_excel(self):
-        pass
-
-    def alter_excel(self):
-        pass
-
-    def look_excel(self):
+class Request_Data:     # 数据收集类
+    def __init__(self):
         pass
 
 
-if __name__ == '__main__':
-    py_excel(input("输入路径")).add_excel()
+class Data_Processing:      # 数据处理类
+    def __init__(self):
+        pass
+
+
+class Graphing:     # 绘制图形类
+    pass
+
+
+if __name__ == '__main__':      # 主函数
+    pass

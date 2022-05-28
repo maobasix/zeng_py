@@ -14,7 +14,6 @@ class Request_Data:  # 数据收集类
         try:
             datetime.datetime.strptime(self.Time, '%Y-%m-%d')
         except ValueError:
-            print("时间格式错误")
             Data['type'] = 'False'
             Data['msg'] = '时间格式错误'
             json_Data = json.dumps(Data)

@@ -1,19 +1,7 @@
-import requests
+import api
+import json
 
-
-class Request_Data:     # 数据收集类
-    def __init__(self):
-        pass
-
-
-class Data_Processing:      # 数据处理类
-    def __init__(self):
-        pass
-
-
-class Graphing:     # 绘制图形类
-    pass
-
-
-if __name__ == '__main__':      # 主函数
-    pass
+if __name__ == '__main__':
+    resp = api.Request_Data('http://api.tianapi.com/ncov/index', '2020-02-12').Get_Info()
+    resp_json = json.loads(resp)
+    print(resp_json)

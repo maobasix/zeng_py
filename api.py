@@ -6,7 +6,6 @@ from PIL import Image, ImageTk
 import numpy as np
 from matplotlib import pyplot as plt
 from pylab import mpl  # 设置显示中文字体
-
 mpl.rcParams["font.sans-serif"] = ["SimHei"]
 mpl.rcParams["axes.unicode_minus"] = False  # 设置正常显示符号
 
@@ -97,19 +96,21 @@ class gui:  # gui界面
         sbar_bottom = tk.Scrollbar(root, orient="horizontal")  # 创建滚动条
         sbar_bottom.pack(side="bottom", fill="x")  # 滚动条贴底
         msg = tk.Text(root, width=280, font=('微软雅黑', 10, 'bold'))
-        button_riskarea = tk.Button(root, text="第二个窗口", command=self.twogui)
         button_off = tk.Button(root, text="关闭", command=root.quit)
         tk.Label(root, text="风险地区", fg="red", font=('Times', 10, 'bold italic')).pack()
         msg.pack()
-        tk.Message()
+        # tk.Message()
         for i in riskarea:
             msg.insert("end", i + "\n")
         sbar_right.config(command=msg.yview)  # 滚动条绑定
         sbar_bottom.config(command=msg.xview)  # 滚动条绑定
-        button_riskarea.pack()
+        tk.Button(root, text="第二个窗口", command=self.twogui).pack()
+        tk.Button(root, text="第三个窗口", command=self.gui_2).pack()
+        tk.Button(root, text="第四个窗口", command=self.gui_3).pack()
+        tk.Button(root, text="第五个窗口", command=self.gui_4).pack()
         button_off.pack(side="bottom")
         root.title("疫情数据查询系统----by_曾大傻")
-        root.geometry('450x300')
+        root.geometry('650x500')
         root.mainloop()
 
     def twogui(self):
@@ -121,6 +122,15 @@ class gui:  # gui界面
         Lab = tk.Label(root, text='第一个图片测试', compound='center', font=('微软雅黑', 30), image=photo)
         Lab.pack()
         root.mainloop()
+
+    def gui_2(self):
+        pass
+
+    def gui_3(self):
+        pass
+
+    def gui_4(self):
+        pass
 
 
 if __name__ == '__main__':

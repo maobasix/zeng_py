@@ -1,3 +1,4 @@
+import os
 import requests
 import datetime
 import json
@@ -6,10 +7,15 @@ from PIL import Image, ImageTk
 import numpy as np
 from matplotlib import pyplot as plt
 from pylab import mpl  # 设置显示中文字体
+
 mpl.rcParams["font.sans-serif"] = ["SimHei"]
 mpl.rcParams["axes.unicode_minus"] = False  # 设置正常显示符号
 
 Data = {}
+
+
+def del_png():
+    os.remove("debug.png")
 
 
 class Request_Data:  # 数据收集类
@@ -53,31 +59,71 @@ class Graphing:  # 绘制图形类,把数据做成图片的形式
             self.pyplt_1()
         elif self.type == 2:
             self.pyplt_2()
-        elif self.type == 3:
-            self.pyplt_3()
-        elif self.type == 4:
-            self.pyplt_4()
 
     def pyplt_0(self):
         message = self.messages
         title = message['msg']['newslist'][0]['news'][0]['title']
-        print(message['msg']['newslist'][0]['news'][0]['title'])
-        x = np.array([title, "Runoob-2", "Runoob-3", "C-RUNOOB"])  # 标题
-        y = np.array([12, 22, 6, 18])  # 数据
-        plt.bar(x, y)
+        plt.title(title)
+        riskare = message['msg']['newslist'][0]['riskarea']['high'] + message['msg']['newslist'][0]['riskarea'][
+            'mid']
+
+        def array_count(i):
+            risk_str = str(riskare[i])
+            i_array = risk_str.split('·')
+            return i_array[0]
+
+        a_c = 0
+        x_title = []
+        y_cout = []
+        for i in range(len(riskare)):
+            i_array_start = array_count(i)
+            try:
+                if i_array_start == array_count(i + 1):
+                    a_c += 1
+                else:
+                    x_title.append(i_array_start)
+                    y_cout.append(a_c)
+                    a_c = 0
+            except:
+                pass
+
+        plt.bar(np.array(x_title), np.array(y_cout))
         plt.savefig("debug.png")
         return 0
 
     def pyplt_1(self):
-        pass
+        message = self.messages
+        title = message['msg']['newslist'][0]['news'][0]['title']
+        plt.title(title)
+        riskare = message['msg']['newslist'][0]['riskarea']['high'] + message['msg']['newslist'][0]['riskarea'][
+            'mid']
+
+        def array_count(i):
+            risk_str = str(riskare[i])
+            i_array = risk_str.split('·')
+            return i_array[0]
+
+        a_c = 0
+        x_title = []
+        y_cout = []
+        for i in range(len(riskare)):
+            i_array_start = array_count(i)
+            try:
+                if i_array_start == array_count(i + 1):
+                    a_c += 1
+                else:
+                    x_title.append(i_array_start)
+                    y_cout.append(a_c)
+                    a_c = 0
+            except:
+                pass
+        for i in range(len(x_title)):
+            plt.plot(np.array(x_title)[i], np.array(y_cout)[i], linestyle='-', color='#DE6B58', marker='x',
+                     linewidth=1.5)
+        plt.savefig("debug.png")
+        return 0
 
     def pyplt_2(self):
-        pass
-
-    def pyplt_3(self):
-        pass
-
-    def pyplt_4(self):
         pass
 
 
@@ -89,7 +135,7 @@ class gui:  # gui界面
         messages = self.messages
         riskarea = messages['msg']['newslist'][0]['riskarea']['high'] + messages['msg']['newslist'][0]['riskarea'][
             'mid']
-        print(riskarea)
+        print("riskarea类型：", type(riskarea))
         root = tk.Tk()
         sbar_right = tk.Scrollbar(root)  # 创建滚动条
         sbar_right.pack(side="right", fill="y")  # 滚动条贴边
@@ -104,33 +150,45 @@ class gui:  # gui界面
             msg.insert("end", i + "\n")
         sbar_right.config(command=msg.yview)  # 滚动条绑定
         sbar_bottom.config(command=msg.xview)  # 滚动条绑定
-        tk.Button(root, text="第二个窗口", command=self.twogui).pack()
+        tk.Button(root, text="第二个窗口", command=self.gui_1).pack()
         tk.Button(root, text="第三个窗口", command=self.gui_2).pack()
         tk.Button(root, text="第四个窗口", command=self.gui_3).pack()
-        tk.Button(root, text="第五个窗口", command=self.gui_4).pack()
         button_off.pack(side="bottom")
         root.title("疫情数据查询系统----by_曾大傻")
         root.geometry('650x500')
         root.mainloop()
 
-    def twogui(self):
+    def gui_1(self):
         root = tk.Toplevel()
         root.title("二级窗口")
         Graphing(a1)
         photo = ImageTk.PhotoImage(Image.open('debug.png'))
         print(photo)
-        Lab = tk.Label(root, text='第一个图片测试', compound='center', font=('微软雅黑', 30), image=photo)
+        Lab = tk.Label(root, compound='center', font=('微软雅黑', 30), image=photo)
         Lab.pack()
         root.mainloop()
+        del_png()
 
     def gui_2(self):
-        pass
+        root = tk.Toplevel()
+        Graphing(a1, 1)
+        root.title("二级窗口")
+        photo = ImageTk.PhotoImage(Image.open('debug.png'))
+        print(photo)
+        Lab = tk.Label(root, compound='center', font=('微软雅黑', 30), image=photo)
+        Lab.pack()
+        root.mainloop()
+        del_png()
 
     def gui_3(self):
-        pass
-
-    def gui_4(self):
-        pass
+        Graphing(a1, 2)
+        root = tk.Toplevel()
+        root.title("二级窗口")
+        photo = ImageTk.PhotoImage(Image.open('debug.png'))
+        print(photo)
+        Lab = tk.Label(root, compound='center', font=('微软雅黑', 30), image=photo)
+        Lab.pack()
+        root.mainloop()
 
 
 if __name__ == '__main__':

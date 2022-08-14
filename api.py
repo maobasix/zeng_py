@@ -14,8 +14,8 @@ mpl.rcParams["axes.unicode_minus"] = False  # 设置正常显示符号
 Data = {}
 
 
-def del_png():
-    os.remove("debug.png")
+def del_png(png_name):
+    os.remove(png_name)
 
 
 class Request_Data:  # 数据收集类
@@ -57,8 +57,6 @@ class Graphing:  # 绘制图形类,把数据做成图片的形式
             self.pyplt_0()
         elif self.type == 1:
             self.pyplt_1()
-        elif self.type == 2:
-            self.pyplt_2()
 
     def pyplt_0(self):
         message = self.messages
@@ -66,6 +64,9 @@ class Graphing:  # 绘制图形类,把数据做成图片的形式
         plt.title(title)
         riskare = message['msg']['newslist'][0]['riskarea']['high'] + message['msg']['newslist'][0]['riskarea'][
             'mid']
+        print(riskare)
+        riskare.sort(reverse=True)
+        print(riskare)
 
         def array_count(i):
             risk_str = str(riskare[i])
@@ -89,6 +90,7 @@ class Graphing:  # 绘制图形类,把数据做成图片的形式
 
         plt.bar(np.array(x_title), np.array(y_cout))
         plt.savefig("debug.png")
+        plt.figure()
         return 0
 
     def pyplt_1(self):
@@ -97,6 +99,9 @@ class Graphing:  # 绘制图形类,把数据做成图片的形式
         plt.title(title)
         riskare = message['msg']['newslist'][0]['riskarea']['high'] + message['msg']['newslist'][0]['riskarea'][
             'mid']
+        print(riskare)
+        riskare.sort(reverse=True)
+        print(riskare)
 
         def array_count(i):
             risk_str = str(riskare[i])
@@ -117,14 +122,12 @@ class Graphing:  # 绘制图形类,把数据做成图片的形式
                     a_c = 0
             except:
                 pass
-        for i in range(len(x_title)):
-            plt.plot(np.array(x_title)[i], np.array(y_cout)[i], linestyle='-', color='#DE6B58', marker='x',
-                     linewidth=1.5)
-        plt.savefig("debug.png")
+        print(len(x_title), len(y_cout))
+        print(x_title)
+        plt.plot(x_title, y_cout)
+        plt.savefig("debug1.png")
+        plt.figure()
         return 0
-
-    def pyplt_2(self):
-        pass
 
 
 class gui:  # gui界面
@@ -167,27 +170,35 @@ class gui:  # gui界面
         Lab = tk.Label(root, compound='center', font=('微软雅黑', 30), image=photo)
         Lab.pack()
         root.mainloop()
-        del_png()
+        del_png('debug.png')
 
     def gui_2(self):
         root = tk.Toplevel()
         Graphing(a1, 1)
         root.title("二级窗口")
-        photo = ImageTk.PhotoImage(Image.open('debug.png'))
+        photo = ImageTk.PhotoImage(Image.open('debug1.png'))
         print(photo)
         Lab = tk.Label(root, compound='center', font=('微软雅黑', 30), image=photo)
         Lab.pack()
         root.mainloop()
-        del_png()
+        del_png('debug1.png')
 
     def gui_3(self):
-        Graphing(a1, 2)
+        messages = self.messages
         root = tk.Toplevel()
         root.title("二级窗口")
-        photo = ImageTk.PhotoImage(Image.open('debug.png'))
-        print(photo)
-        Lab = tk.Label(root, compound='center', font=('微软雅黑', 30), image=photo)
-        Lab.pack()
+        currentConfirmedCount = messages['msg']['newslist'][0]['desc']['currentConfirmedCount']  # 现存确诊
+        confirmedCount = messages['msg']['newslist'][0]['desc']['confirmedCount']  # 累计确诊
+        curedCount = messages['msg']['newslist'][0]['desc']['curedCount']  # 累计治愈
+        deadCount = messages['msg']['newslist'][0]['desc']['curedCount']  # 累计死亡
+        seriousCount = messages['msg']['newslist'][0]['desc']['seriousCount']  # 累计无症状
+        highDangerCount = messages['msg']['newslist'][0]['desc']['highDangerCount']  # 国内高风险地区个数
+        midDangerCount = messages['msg']['newslist'][0]['desc']['midDangerCount']  # 国内中风险地区个数
+        msg = tk.Text(root, width=280, font=('微软雅黑', 10, 'bold'))
+        msg.pack()
+        meg = "现存确诊:{}人\n 累计确诊:{}人\n 累计治愈:{}人\n 累计死亡:{}人\n 累计无症状:{}人\n 国内高风险地区:{}个\n 国内中风险地区:{}个".format(
+            currentConfirmedCount, confirmedCount, curedCount, deadCount, seriousCount, highDangerCount, midDangerCount)
+        msg.insert("end", meg)
         root.mainloop()
 
 

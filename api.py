@@ -157,7 +157,7 @@ class gui:  # gui界面
         tk.Button(root, text="第三个窗口", command=self.gui_2).pack()
         tk.Button(root, text="第四个窗口", command=self.gui_3).pack()
         button_off.pack(side="bottom")
-        root.title("疫情数据查询系统----by_曾大傻")
+        root.title("疫情数据查询系统")
         root.geometry('650x500')
         root.mainloop()
 
